@@ -60,28 +60,10 @@ function isInstallationAlreadyPerformed(ctx) {
  * Create empty file - indicator, that we tried to install dependency modules after installation.
  * We have to do that, or this hook is gonna be called on any plugin installation.
  */
-function createPluginInstalledFlag(ctx) {
-  var pathToInstallFlag = path.join(ctx.opts.projectRoot, 'plugins', ctx.opts.plugin.id, INSTALLATION_FLAG_FILE_NAME);
 
-  fs.closeSync(fs.openSync(pathToInstallFlag, 'w'));
-}
 // endregion
 
 module.exports = function(ctx) {
-  if (isInstallationAlreadyPerformed(ctx)) {
-    return;
-  }
-
-  console.log('Installing dependency packages: ');
-  console.log(JSON.stringify(pluginNpmDependencies, null, 2));
-
-  var npm = (process.platform === "win32" ? "npm.cmd" : "npm");
-  var result = spawnSync(npm, ['install', '--production'], { cwd: './plugins/' + ctx.opts.plugin.id });
-  if (result.error) {
-    throw result.error;
-  }
-
-  createPluginInstalledFlag(ctx);
 
   console.log('Checking cordova-hcp CLI client...');
 

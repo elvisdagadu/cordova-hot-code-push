@@ -1,7 +1,7 @@
 /**
-Helper module to work with config.xml file.
-We will use it to inject plugin-specific options.
-*/
+ Helper module to work with config.xml file.
+ We will use it to inject plugin-specific options.
+ */
 
 
 var path = require('path');
@@ -11,7 +11,7 @@ var projectRoot;
 var platforms;
 
 module.exports = {
-  writeOptions: writeOptions
+    writeOptions: writeOptions
 };
 
 // region Public API
@@ -23,8 +23,8 @@ module.exports = {
  * @param {Object} options - plugin options to inject
  */
 function writeOptions(context, options) {
-  setup(context);
-  injectOptions(options);
+    setup(context);
+    injectOptions(options);
 }
 
 // endregion
@@ -36,9 +36,9 @@ function writeOptions(context, options) {
  * @param {Object} cordovaContext - cordova context instance
  */
 function setup(context) {
-  cordovaContext = context;
-  platforms = context.opts.platforms;
-  projectRoot = context.opts.projectRoot;
+    cordovaContext = context;
+    platforms = context.opts.platforms;
+    projectRoot = context.opts.projectRoot;
 }
 
 /**
@@ -50,19 +50,19 @@ function setup(context) {
  * @return {String} name of the project
  */
 function getProjectName(ctx, projectRoot) {
-  var cordova_util = ctx.requireCordovaModule('cordova-lib/src/cordova/util');
-  var xml = cordova_util.projectConfig(projectRoot);
-  var ConfigParser;
+    var cordova_util = ctx.requireCordovaModule('cordova-lib/src/cordova/util');
+    var xml = cordova_util.projectConfig(projectRoot);
+    var ConfigParser;
 
-  // If we are running Cordova 5.4 or abova - use parser from cordova-common.
-  // Otherwise - from cordova-lib.
-  try {
-    ConfigParser = ctx.requireCordovaModule('cordova-common/src/ConfigParser/ConfigParser');
-  } catch (e) {
-    ConfigParser = ctx.requireCordovaModule('cordova-lib/src/configparser/ConfigParser')
-  }
+    // If we are running Cordova 5.4 or abova - use parser from cordova-common.
+    // Otherwise - from cordova-lib.
+    try {
+        ConfigParser = ctx.requireCordovaModule('cordova-common/src/ConfigParser/ConfigParser');
+    } catch (e) {
+        ConfigParser = ctx.requireCordovaModule('cordova-lib/src/configparser/ConfigParser')
+    }
 
-  return new ConfigParser(xml).name();
+    return new ConfigParser(xml).name();
 }
 
 /**
@@ -71,9 +71,9 @@ function getProjectName(ctx, projectRoot) {
  * @return {String} absolute path to config.xml file
  */
 function pathToIosConfigXml() {
-  var projectName = getProjectName(cordovaContext, projectRoot);
+    var projectName = getProjectName(cordovaContext, projectRoot);
 
-  return path.join(projectRoot, 'platforms', 'ios', projectName, 'config.xml');
+    return path.join(projectRoot, 'platforms', 'ios', projectName, 'config.xml');
 }
 
 /**
@@ -82,7 +82,7 @@ function pathToIosConfigXml() {
  * @return {String} absolute path to config.xml file
  */
 function pathToAndroidConfigXml() {
-  return path.join(projectRoot, 'platforms', 'android', 'res', 'xml', 'config.xml');
+    return path.join(projectRoot, 'platforms', 'android', 'res', 'xml', 'config.xml');
 }
 
 /**
@@ -92,21 +92,19 @@ function pathToAndroidConfigXml() {
  * @return {String} absolute path to config.xml
  */
 function getPlatformSpecificConfigXml(platform) {
-  var configFilePath = null;
-  switch (platform) {
-    case 'ios':
-      {
-        configFilePath = pathToIosConfigXml();
-        break;
-      }
-    case 'android':
-      {
-        configFilePath = pathToAndroidConfigXml();
-        break;
-      }
-  }
+    var configFilePath = null;
+    switch (platform) {
+        case 'ios': {
+            configFilePath = pathToIosConfigXml();
+            break;
+        }
+        case 'android': {
+            configFilePath = pathToAndroidConfigXml();
+            break;
+        }
+    }
 
-  return configFilePath;
+    return configFilePath;
 }
 
 /**
@@ -115,30 +113,30 @@ function getPlatformSpecificConfigXml(platform) {
  * @param {Object} options - plugin options
  */
 function injectOptions(options) {
-  platforms.forEach(function(platform) {
-    var configXmlFilePath = getPlatformSpecificConfigXml(platform);
-    if (configXmlFilePath == null) {
-      return;
-    }
+    platforms.forEach(function (platform) {
+        var configXmlFilePath = getPlatformSpecificConfigXml(platform);
+        if (configXmlFilePath == null) {
+            return;
+        }
 
-    // read data from config.xml
-    var configData = xmlHelper.readXmlAsJson(configXmlFilePath);
-    if (configData == null) {
-      console.warn('Configuration file ' + configXmlFilePath + ' not found');
-      return;
-    }
+        // read data from config.xml
+        var configData = xmlHelper.readXmlAsJson(configXmlFilePath);
+        if (configData == null) {
+            console.warn('Configuration file ' + configXmlFilePath + ' not found');
+            return;
+        }
 
-    // inject new options
-    var chcpXmlConfig = {};
-    for (var preferenceName in options) {
-      injectPreference(chcpXmlConfig, preferenceName, options[preferenceName]);
-    }
+        // inject new options
+        var chcpXmlConfig = {};
+        for (var preferenceName in options) {
+            injectPreference(chcpXmlConfig, preferenceName, options[preferenceName]);
+        }
 
-    // write them back to config.xml
-    configData.widget['chcp'] = [];
-    configData.widget.chcp.push(chcpXmlConfig);
-    xmlHelper.writeJsonAsXml(configData, configXmlFilePath);
-  });
+        // write them back to config.xml
+        configData.widget['chcp'] = [];
+        configData.widget.chcp.push(chcpXmlConfig);
+        xmlHelper.writeJsonAsXml(configData, configXmlFilePath);
+    });
 }
 
 /**
@@ -149,9 +147,9 @@ function injectOptions(options) {
  * @param {Object} preferenceAttributes - preference attributes
  */
 function injectPreference(xml, preferenceName, preferenceAttributes) {
-  xml[preferenceName] = [{
-    '$': preferenceAttributes
-  }];
+    xml[preferenceName] = [{
+        '$': preferenceAttributes
+    }];
 }
 
 // endregion

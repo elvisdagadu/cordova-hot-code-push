@@ -24,18 +24,21 @@
     "cordova-android",
     "cordova-ios"
   ],
-  "engines": [
-    {
-      "name": "cordova-android",
-      "version": ">=4"
-    },
-    {
-      "name": "cordova-plugman",
-      "version": ">=4.2.0"
+  "engines": {
+    "cordovaDependencies": {
+      "5.0.0": {
+        "cordova-android": ">=6.3.0"
+      },
+      "7.0.0": {
+        "cordova": ">100"
+      }
     }
-  ],
-  "dependencies": {
-    "xml2js": "^0.4"
+  },
+  "bundleDependencies": false,
+  "devDependencies": {
+    "xml2js": "^0.4",
+    "sax" : "^1.2.4",
+    "xmlbuilder" : "^9.0.7"
   },
   "author": "Nikolay Demyankov for Nordnet Bank AB",
   "license": "MIT",
