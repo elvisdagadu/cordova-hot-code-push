@@ -1,8 +1,4 @@
-# THIS PROJECT IS DEPRECATED
-
-We are not using this repo anymore, and we lack the manpower and the experience needed to maintain it. We are aware of the inconveniece that this may cause you. Feel free to use it as is, or create your own fork. See https://github.com/nordnet/cordova-hot-code-push/issues/371 for more information.
-
-# Cordova Hot Code Push Plugin
+# Cordova Hot Code Push Plugin updated to be compatible with Cordova 9
 
 This plugin provides functionality to perform automatic updates of the web based content in your application. Basically, everything that is stored in `www` folder of your Cordova project can be updated using this plugin.
 
@@ -24,10 +20,10 @@ As a result, your application receives updates of the web content as soon as pos
 
 ### Installation
 
-This requires cordova 5.0+ (current stable 1.5.3)
+This requires cordova 5.0+ (current stable 1.6.0)
 
 ```sh
-cordova plugin add cordova-hot-code-push-plugin
+cordova plugin add https://github.com/elvisdagadu/cordova-hot-code-push.git
 ```
 
 It is also possible to install via repo url directly (__unstable__)
@@ -35,6 +31,8 @@ It is also possible to install via repo url directly (__unstable__)
 cordova plugin add https://github.com/elvisdagadu/cordova-hot-code-push.git
 ```
 
+Yet to setup an npm repo for this plugin
+ 
 At the end of the installation plugin will recommend you to install [Cordova Hot Code Push CLI client](https://github.com/nordnet/cordova-hot-code-push-cli). This client will help you to:
 - easily generate necessary configuration files;
 - launch local server to listen for any changes in the web project and deploy new version immediately on the app.
